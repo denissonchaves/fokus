@@ -8,9 +8,10 @@ const botoes = document.querySelectorAll(".app__card-button");
 const musicaFocoInput = document.querySelector("#alternar-musica");
 const musica = new Audio("./sons/luna-rise-part-one.mp3");
 musica.loop = true;
+musicaFocoInput.checked = false;
 
 musicaFocoInput.addEventListener("change", () => {
-  if (musica.paused) {
+  if (musica.paused == true && musicaFocoInput.checked == true) {
     musica.play();
   } else {
     musica.pause();
@@ -18,7 +19,7 @@ musicaFocoInput.addEventListener("change", () => {
 });
 
 function alterarContexto(contexto) {
-  botoes.forEach(function(contexto) {
+  botoes.forEach(function (contexto) {
     contexto.classList.remove("active");
   });
   html.setAttribute("data-contexto", contexto);
