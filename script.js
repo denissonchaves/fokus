@@ -18,7 +18,7 @@ const audioPause = new Audio("./sons/pause.mp3");
 musica.loop = true;
 musicaFocoInput.checked = false;
 
-let tempoDecorridoEmSegundos = 5;
+let tempoDecorridoEmSegundos = 1500;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener("change", () => {
@@ -30,6 +30,7 @@ musicaFocoInput.addEventListener("change", () => {
 });
 
 function alterarContexto(contexto) {
+  mostrarTempo();
   botoes.forEach(function (contexto) {
     contexto.classList.remove("active");
   });
@@ -63,22 +64,28 @@ function alterarContexto(contexto) {
 }
 
 focoBt.addEventListener("click", () => {
+  tempoDecorridoEmSegundos = 1500;
   alterarContexto("foco");
   focoBt.classList.add("active");
 });
 
 curtoBt.addEventListener("click", () => {
+  tempoDecorridoEmSegundos = 5;
   alterarContexto("descanso-curto");
   curtoBt.classList.add("active");
 });
 
 longoBt.addEventListener("click", () => {
+  tempoDecorridoEmSegundos = 900;
   alterarContexto("descanso-longo");
   longoBt.classList.add("active");
 });
 
 const contagemRegressiva = () => {
   if (tempoDecorridoEmSegundos <= 0) {
+    musica.pause();
+    musica.currentTime = 0;
+    musicaFocoInput.checked = false;
     audioTempoFinalizado.play();
     alert("Tempo finalizado!");
     zerar();
@@ -109,20 +116,13 @@ function zerar() {
   intervaloId = null;
 }
 
-// function zerar() {
-//   if (tempoDecorridoEmSegundos == 0) {
-//     clearInterval(intervaloId);
-//     intervaloId = null;
-//     tempoDecorridoEmSegundos = 5;
-//   } else {
-//     clearInterval(intervaloId);
-//     intervaloId = null;
-//   }
-// }
-
 function mostrarTempo() {
-  const tempo = tempoDecorridoEmSegundos;
-  tempoNaTela.innerHTML = `<strong>${tempo}</strong>`;
+  const tempo = new Date(tempoDecorridoEmSegundos * 1000);
+  const tempoFormatado = tempo.toLocaleTimeString("pt-BR", {
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  tempoNaTela.innerHTML = `<strong>${tempoFormatado}</strong>`;
 }
 
 mostrarTempo();
